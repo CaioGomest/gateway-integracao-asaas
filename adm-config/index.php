@@ -234,7 +234,7 @@ $result = $stmt->get_result();
         <div class="card custom-card">
             <div class="card-header justify-content-between">
                 <div class="card-title">
-                    Adquirentes PIX
+                    Adquirentes
                 </div>
             </div>
             <div class="card-body">
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="col-md-12">
         <div class="card custom-card shadow-sm">
             <div class="card-header text-center bg-light">
-                <h5 class="card-title m-0">AJUSTES ADQUIRENTES PIX</h5>
+                <h5 class="card-title m-0">AJUSTES ADQUIRENTES</h5>
             </div>
             <div class="card-body p-3">
                 <div class="table-responsive">
@@ -347,22 +347,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>PagPix</td>
+                             <tr>
+                                <td>Asaas</td>
                                 <td>
-                                    <a href="editar_adquirente_pix.php?id=pagpix" class="btn btn-primary btn-wave">Editar</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>BsPay</td>
-                                <td>
-                                    <a href="editar_adquirente_pix.php?id=bspay" class="btn btn-primary btn-wave">Editar</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>SuitPay</td>
-                                <td>
-                                    <a href="editar_adquirente_pix.php?id=suitpay" class="btn btn-primary btn-wave">Editar</a>
+                                    <a href="editar_adquirente_pix.php?id=asaas" class="btn btn-primary btn-wave">Editar</a>
                                 </td>
                             </tr>
                         </tbody>

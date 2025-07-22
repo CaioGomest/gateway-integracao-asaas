@@ -1,20 +1,19 @@
 <?php
 // Inicie a sessão (certifique-se de que isso está no início do seu script)
-session_start();
+	session_start();
 
 // Seção de configuração do banco de dados
-  include './../conectarbanco.php';
+	include './../conectarbanco.php';
+
+
+// Importa função asaasRequest para consultar status
+	require_once __DIR__ . '/../v1/adquirente/asaas/asaas_functions.php';
 
     $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
 
 
-
-
-
 // Verifique o valor da sessão antes de usar na SQL
 echo 'Valor da Sessão: ' . $_SESSION['email'];
-
-
 
 // Verificar a conexão com o banco de dados
 if ($conn->connect_error) {
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Converta os dados JSON para um array associativo
+    // Decodifica JSON para array
     $dados_array = json_decode($dados, true);
 
     // Adicione uma marca de data e hora aos dados
@@ -41,6 +40,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Salve os dados no arquivo de log
     $logFile = 'webhook_log.txt';
     file_put_contents($logFile, $dados_log, FILE_APPEND);
+
+    // Se for consulta de status (action === 'status')
+    if (isset($dados_array['action']) && $dados_array['action'] === 'status') {
+        if (empty($dados_array['idTransaction'])) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'idTransaction obrigatório para status.']);
+            exit;
+        }
+        $paymentId = $dados_array['idTransaction'];
+        $statusResp = asaasRequest("payments/{$paymentId}", 'GET');
+        $paymentStatus = $statusResp['status'] ?? null;
+
+        // Se estiver pago (RECEIVED), salva no banco
+        if ($paymentStatus === 'RECEIVED') {
+            // Dados para salvar
+            $value = $statusResp['value'] ?? null;
+            $email = isset($_SESSION['email']) ? $_SESSION['email'] : 'N/A';
+            $code = $statusResp['externalReference'] ?? $paymentId;
+            $status = $paymentStatus;
+            $data = date('Y-m-d H:i:s');
+            $sql = "INSERT INTO pix_deposito (value, email, code, status, data) VALUES ('$value', '$email', '$code', '$status', '$data')";
+            if ($conn->query($sql) === TRUE) {
+                echo json_encode(['status' => 'success', 'message' => 'Pagamento confirmado e salvo no banco!', 'asaas' => $statusResp]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Erro ao salvar no banco', 'db_error' => $conn->error, 'asaas' => $statusResp]);
+            }
+        } else {
+            echo json_encode([
+                'status' => 'pending',
+                'message' => 'Pagamento ainda não recebido.',
+                'paymentStatus' => $paymentStatus,
+                'asaas' => $statusResp
+            ]);
+        }
+        exit;
+    }
 
     // Insira os dados na tabela do banco de dados
     $value = $dados_array['value']; // Substitua 'value' pelo nome correto do campo
