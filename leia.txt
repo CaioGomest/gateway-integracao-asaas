@@ -1,0 +1,21 @@
+suba seu banco de dados nas seguintes rotas
+na pasta api.seusite
+conectarbanco.php
+
+na pasta pay.seusite
+conectarbanco.php
+conectar_api_banco.php
+
+na pasta web.seusite
+conectar_api_banco.php
+conectarbanco.php
+também na pasta layouts/componentes
+coloque seu banco de dados em sidebar.php
+
+código 2fa use o aplicativo autenticar do google
+OA636SLSRAK3SF7Y
+
+administrador 
+admin@eu.com
+qwe123#
+
