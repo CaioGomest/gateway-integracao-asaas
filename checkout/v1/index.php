@@ -1,58 +1,59 @@
 <?php
 include '../../conectarbanco.php';  // Conectar ao banco de dados
-
+include 'alerta_customizado.php';
 // Conectar ao banco de dados
 $conn = new mysqli('localhost', $config['db_user'], $config['db_pass'], $config['db_name']);
 
 // Verifica se houve algum erro na conexão
 if ($conn->connect_error) {
-    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+  die("Erro na conexão com o banco de dados: " . $conn->connect_error);
 }
 
 // Verifica se o parâmetro 'id' está presente na URL
 if (isset($_GET['id'])) {
-    // Recupera o valor do parâmetro 'id'
-    $id = $_GET['id'];
+  // Recupera o valor do parâmetro 'id'
+  $id = $_GET['id'];
 
-    // Sanitiza o valor do parâmetro
-    $id = preg_replace('/[^a-zA-Z0-9_\-]/', '', $id);
+  // Sanitiza o valor do parâmetro
+  $id = preg_replace('/[^a-zA-Z0-9_\-]/', '', $id);
 
-    // Construa a consulta SQL para procurar o id na coluna url_checkout
-    $sql = "SELECT id, name_produto, valor, logo_produto, banner_produto, obrigado_page, key_gateway, ativo, email
+  // Construa a consulta SQL para procurar o id na coluna url_checkout
+  $sql = "SELECT id, name_produto, valor, logo_produto, banner_produto, obrigado_page, key_gateway, ativo, email
             FROM checkout_build
             WHERE url_checkout LIKE ?";
 
-    // Adiciona o ID sanitizado ao padrão de busca com LIKE
-    $id_like = "%?id=" . $id . "%";
+  // Adiciona o ID sanitizado ao padrão de busca com LIKE
+  $id_like = "%?id=" . $id . "%";
 
-    // Prepara e executa a consulta
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $id_like);
-    $stmt->execute();
+  // Prepara e executa a consulta
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $id_like);
+  $stmt->execute();
 
-    // Obtém os resultados
-    $result = $stmt->get_result();
+  // Obtém os resultados
+  $result = $stmt->get_result();
 
-    // Verifica se há resultados
-    if ($result->num_rows > 0) {
-        // Exibe os dados encontrados
-        $row = $result->fetch_assoc();
-    } else {
-        $row = null;
-        echo "Nenhum registro encontrado para o ID especificado.";
-    }
+  // Verifica se há resultados
+  if ($result->num_rows > 0) {
+    // Exibe os dados encontrados
+    $row = $result->fetch_assoc();
+  } else {
+    $row = null;
+    echo "Nenhum registro encontrado para o ID especificado.";
+  }
 
-    // Fecha a declaração
-    $stmt->close();
+  // Fecha a declaração
+  $stmt->close();
 } else {
-    echo "Parâmetro 'id' não encontrado na URL.";
+  echo "Parâmetro 'id' não encontrado na URL.";
 }
 
 // Fecha a conexão
 $conn->close();
-function safe_number_format($num, $decimals = 2) {
-    // Se $num for null ou não for um número válido, substitui por 0
-    return number_format(is_numeric($num) ? $num : 0, $decimals);
+function safe_number_format($num, $decimals = 2)
+{
+  // Se $num for null ou não for um número válido, substitui por 0
+  return number_format(is_numeric($num) ? $num : 0, $decimals);
 }
 ?>
 
@@ -644,7 +645,6 @@ function safe_number_format($num, $decimals = 2) {
       width: 20px
     }
 
-  
 
     .email-icon:before {
       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9ImN1cnJlbnRDb2xvciIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wIDRhMiAyIDAgMCAxIDItMmgxMmEyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgyYTIgMiAwIDAgMS0yLTJWNFptMi0xYTEgMSAwIDAgMC0xIDF2LjIxN2w3IDQuMiA3LTQuMlY0YTEgMSAwIDAgMC0xLTFIMlptMTMgMi4zODMtNC43MDggMi44MjVMMTUgMTEuMTA1VjUuMzgzWm0tLjAzNCA2Ljg3Ni01LjY0LTMuNDcxTDggOS41ODNsLTEuMzI2LS43OTUtNS42NCAzLjQ3QTEgMSAwIDAgMCAyIDEzaDEyYTEgMSAwIDAgMCAuOTY2LS43NDFaTTEgMTEuMTA1bDQuNzA4LTIuODk3TDEgNS4zODN2NS43MjJaIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3ZnPg==);
@@ -1875,8 +1875,6 @@ function safe_number_format($num, $decimals = 2) {
       }
     }
   </style>
-  <script charset="utf-8" src="arquivos/0739fa6.js"></script>
-  <script charset="utf-8" src="arquivos/6e78416.js"></script>
   <style type="text/css">
     .backgroundBanner[data-v-24d558e9] {
       filter: blur(15px);
@@ -2016,6 +2014,8 @@ function safe_number_format($num, $decimals = 2) {
   <link data-n-head="1" rel="preconnect" href="https://www.googletagmanager.com/">
   <link data-n-head="1" rel="preconnect" href="https://www.google-analytics.com/">
   <meta data-n-head="1" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- ALERTA CUSTOMIZADO -->
+
 </head>
 
 <body cz-shortcut-listen="true">
@@ -2098,23 +2098,26 @@ function safe_number_format($num, $decimals = 2) {
         <main data-v-24d558e9="">
 
 
-        <div data-v-24d558e9="" class="bannerImage" style="">
-    <?php if (!empty($row['banner_produto'])): ?>
-        <img data-v-24d558e9="" fetchpriority="high" rel="preload" alt="Banner image" src="../../<?php echo htmlspecialchars($row['banner_produto']); ?>">
-    <?php endif; ?>
-</div>
+          <div data-v-24d558e9="" class="bannerImage" style="">
+            <?php if (!empty($row['banner_produto'])): ?>
+              <img data-v-24d558e9="" fetchpriority="high" rel="preload" alt="Banner image"
+                src="../../<?php echo htmlspecialchars($row['banner_produto']); ?>">
+            <?php endif; ?>
+          </div>
 
 
           <div data-v-24d558e9="" class="content-wrapper">
             <h5 data-v-24d558e9="">VOCÊ ESTÁ ADQUIRINDO:</h5>
             <div data-v-24d558e9="" class="contentProductData">
               <div data-v-24d558e9="" class="image-content"><img data-v-24d558e9="" alt="imagem do produto"
-                  fetchpriority="high" rel="preload" src="../../<?php echo htmlspecialchars($row['logo_produto']); ?>" style=""></div>
+                  fetchpriority="high" rel="preload" src="../../<?php echo htmlspecialchars($row['logo_produto']); ?>"
+                  style=""></div>
               <div data-v-24d558e9="" class="infoProduct">
-                <h4 data-v-24d558e9=""><?php echo htmlspecialchars($row['name_produto']); ?></h4> <span data-v-24d558e9="">
+                <h4 data-v-24d558e9=""><?php echo htmlspecialchars($row['name_produto']); ?></h4> <span
+                  data-v-24d558e9="">
 
-                <h3 data-v-24d558e9="">
-                  <?php echo "RS " . safe_number_format($row['valor'], 2, ',', '.'); ?>
+                  <h3 data-v-24d558e9="">
+                    <?php echo "RS " . safe_number_format($row['valor'], 2, ',', '.'); ?>
                   </h3>
                 </span>
               </div>
@@ -2175,7 +2178,7 @@ function safe_number_format($num, $decimals = 2) {
 
             }
 
-            #copy-button {
+            #copy-button-pix {
 
               background-color: #3166e0;
               border-radius: 6px;
@@ -2234,67 +2237,19 @@ function safe_number_format($num, $decimals = 2) {
           <div data-v-24d558e9="" class="content-wrapper secondary">
 
             <div class="box1" style="display: none;">
-              <h2 data-v-4dd5f040="">
-                Siga os passos para pagar:
-              </h2>
 
-              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">1 - </span>Copie o código
-                <strong data-v-4dd5f040="">PIX:</strong></p>
 
-              <div class="conteiner">
-                <div id="qrcode"></div>
 
-                <div class="divqr">
-                  <div id="qr-code-text"></div>
-                  <button id="copy-button">Copiar Código Pix</button>
-                </div>
-              </div>
-              <br>
-              
-              
-                           <script>
-        document.getElementById('copy-button').addEventListener('click', function() {
-            // Seleciona o texto do div
-            var textToCopy = document.getElementById('qr-code-text').innerText;
-            
-            // Cria um elemento de input temporário para usar o comando de copiar
-            var tempInput = document.createElement('input');
-            tempInput.value = textToCopy;
-            document.body.appendChild(tempInput);
-            
-            // Seleciona o texto no input e copia
-            tempInput.select();
-            document.execCommand('copy');
-            
-            // Remove o input temporário da página
-            document.body.removeChild(tempInput);
-            
-            // Feedback opcional: Alerta ou uma mensagem para o usuário
-            alert('Código Pix copiado para a área de transferência!');
-        });
-    </script>
-    
-    
-    
 
-              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">2 - </span>Abra o aplicativo do seu banco
-                favorito
-              </p>
-              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">3 - </span> <span data-v-4dd5f040="">
-                Na seção de PIX, selecione a opção
-                <strong data-v-4dd5f040="">"Pix Copia e Cola"</strong></span></p>
-                <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">4 - </span>Cole o código</p>
-                <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">5 - </span>Confirme o pagamento</p>
-  
             </div>
 
-       
-            <div id="apiResponse"style="display: none;"></div>
 
+            <div id="apiResponse" style="display: none;"></div>
             <div class="properties">
               <form data-v-24d558e9="">
                 <h2 data-v-24d558e9="">
-                  <span data-v-24d558e9="" class="orderNumber">1</span> Dados pessoais</h2>
+                  <span data-v-24d558e9="" class="orderNumber">1</span> Dados pessoais
+                </h2>
                 <div data-v-24d558e9="" class="input-wrapper">
                   <label data-v-24d558e9="" for="userName">NOME
                     COMPLETO</label>
@@ -2312,122 +2267,151 @@ function safe_number_format($num, $decimals = 2) {
                   </div> <span data-v-24d558e9="" class="alertText" style="display: none;">
                   </span>
                 </div>
-<div data-v-24d558e9="" class="containerInputs">
-  <div data-v-24d558e9="" class="input-wrapper">
-    <label data-v-24d558e9="" for="userDocument">CPF</label>
-    <div data-v-24d558e9="" class="input-icons padlock-icon">
-      <input data-v-24d558e9="" type="tel" inputmode="tel" id="document" name="document" autocomplete="on" class="">
-    </div>
-    <span data-v-24d558e9="" class="alertText" style="display: none;">Digite um documento válido.</span>
-  </div>
- <div data-v-24d558e9="" class="input-wrapper">
-    <label data-v-24d558e9="" for="userPhone">CELULAR COM WHATSAPP</label>
-    <div data-v-24d558e9="" class="input-icons phone-icon">
-      <input data-v-24d558e9="" type="tel" inputmode="tel" name="userPhone" class="">
-    </div>
-    <span data-v-24d558e9="" class="alertText" style="display: none;"></span>
-  </div>
-</div>
-                  <?php
-// Certifique-se de que $row['valor'] é um valor numérico
-$valor = safe_number_format($row['valor'], 2, ',', '.');
-?>
-<div class="valor" style="display: none;">
-    <input type="text" value="<?php echo htmlspecialchars($valor); ?>" placeholder="<?php echo htmlspecialchars($valor); ?>" readonly id="valuedeposit">
-</div>
-                </div>
-                <h2 data-v-24d558e9=""><span data-v-24d558e9="" class="orderNumber">2</span> DADOS DE PAGAMENTO</h2>
-
-                <div data-v-24d558e9="" id="pixOption" class="tab-content">
-                  <h4 data-v-24d558e9="">Pague no PIX</h4>
-                  <h3 data-v-24d558e9="">
-
-
-                    <img data-v-24d558e9="" fetchpriority="high" rel="preload"
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzAwZDNjNyIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNNi41IDBhLjUuNSAwIDAgMCAwIDFIN3YxLjA3QTcuMDAxIDcuMDAxIDAgMCAwIDggMTZhNyA3IDAgMCAwIDUuMjktMTEuNTg0LjUzMS41MzEgMCAwIDAgLjAxMy0uMDEybC4zNTQtLjM1NC4zNTMuMzU0YS41LjUgMCAxIDAgLjcwNy0uNzA3bC0xLjQxNC0xLjQxNWEuNS41IDAgMSAwLS43MDcuNzA3bC4zNTQuMzU0LS4zNTQuMzU0YS43MTcuNzE3IDAgMCAwLS4wMTIuMDEyQTYuOTczIDYuOTczIDAgMCAwIDkgMi4wNzFWMWguNWEuNS41IDAgMCAwIDAtMWgtM3ptMiA1LjZWOWEuNS41IDAgMCAxLS41LjVINC41YS41LjUgMCAwIDEgMC0xaDNWNS42YS41LjUgMCAxIDEgMSAweiIgLz4KICAgICAgICAgICAgICAgICAgICAgICAgPC9zdmc+">
-                    Imediato
-                  </h3>
-                  <p data-v-24d558e9="">
-                    Ao selecionar a opção Gerar Pix o código para pagamento estará
-                    disponível.
-                  </p>
-                  <h3 data-v-24d558e9=""><img data-v-24d558e9="" fetchpriority="high" rel="preload"
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzAwZDNjNyIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMiAyaDJ2MkgyVjJaIiAvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02IDB2NkgwVjBoNlpNNSAxSDF2NGg0VjFaTTQgMTJIMnYyaDJ2LTJaIiAvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik02IDEwdjZIMHYtNmg2Wm0tNSAxdjRoNHYtNEgxWm0xMS05aDJ2MmgtMlYyWiIgLz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBkPSJNMTAgMHY2aDZWMGgtNlptNSAxdjRoLTRWMWg0Wk04IDFWMGgxdjJIOHYySDdWMWgxWm0wIDVWNGgxdjJIOFpNNiA4VjdoMVY2aDF2MmgxVjdoNXYxaC00djFIN1Y4SDZabTAgMHYxSDJWOEgxdjFIMFY3aDN2MWgzWm0xMCAxaC0xVjdoMXYyWm0tMSAwaC0xdjJoMnYtMWgtMVY5Wm0tNCAwaDJ2MWgtMXYxaC0xVjlabTIgM3YtMWgtMXYxaC0xdjFIOXYxaDN2LTJoMVptMCAwaDN2MWgtMnYxaC0xdi0yWm0tNC0xdjFoMXYtMkg3djFoMloiIC8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTcgMTJoMXYzaDR2MUg3di00Wm05IDJ2MmgtM3YtMWgydi0xaDFaIiAvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9zdmc+">
-                    PAGAMENTO SIMPLES
-                  </h3>
-                  <p data-v-24d558e9="">
-                    Para pagar basta abrir o aplicativo do seu banco, procurar pelo
-                    PIX e escanear o QRcode.
-                  </p>
-                  <h3 data-v-24d558e9=""><img data-v-24d558e9="" fetchpriority="high" rel="preload"
-                      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzAwZDNjNyIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04IDBjLS42OSAwLTEuODQzLjI2NS0yLjkyOC41Ni0xLjExLjMtMi4yMjkuNjU1LTIuODg3Ljg3YTEuNTQgMS41NCAwIDAgMC0xLjA0NCAxLjI2MmMtLjU5NiA0LjQ3Ny43ODcgNy43OTUgMi40NjUgOS45OWExMS43NzcgMTEuNzc3IDAgMCAwIDIuNTE3IDIuNDUzYy4zODYuMjczLjc0NC40ODIgMS4wNDguNjI1LjI4LjEzMi41ODEuMjQuODI5LjI0cy41NDgtLjEwOC44MjktLjI0YTcuMTU5IDcuMTU5IDAgMCAwIDEuMDQ4LS42MjUgMTEuNzc1IDExLjc3NSAwIDAgMCAyLjUxNy0yLjQ1M2MxLjY3OC0yLjE5NSAzLjA2MS01LjUxMyAyLjQ2NS05Ljk5YTEuNTQxIDEuNTQxIDAgMCAwLTEuMDQ0LTEuMjYzIDYyLjQ2NyA2Mi40NjcgMCAwIDAtMi44ODctLjg3QzkuODQzLjI2NiA4LjY5IDAgOCAwem0yLjE0NiA1LjE0NmEuNS41IDAgMCAxIC43MDguNzA4bC0zIDNhLjUuNSAwIDAgMS0uNzA4IDBsLTEuNS0xLjVhLjUuNSAwIDEgMSAuNzA4LS43MDhMNy41IDcuNzkzbDIuNjQ2LTIuNjQ3eiIgLz4KICAgICAgICAgICAgICAgICAgICAgICAgPC9zdmc+">
-                    100% SEGURO
-                  </h3>
-                  <p data-v-24d558e9="">
-                    O pagamento com PIX foi desenvolvido pelo Banco Central para
-                    facilitar suas compras.
-                  </p>
-                </div> <!----> <!---->
-                <div data-v-24d558e9="" class="order-bump-content" style="display: none;">
-                  <div data-v-24d558e9="" class="titleContentBump">
-                    Adicione mais estes produtos com um desconto imperdível!
+                <div data-v-24d558e9="" class="containerInputs">
+                  <div data-v-24d558e9="" class="input-wrapper">
+                    <label data-v-24d558e9="" for="userDocument">CPF</label>
+                    <div data-v-24d558e9="" class="input-icons padlock-icon">
+                      <input data-v-24d558e9="" type="tel" inputmode="tel" id="document" name="document"
+                        autocomplete="on" class="">
+                    </div>
+                    <span data-v-24d558e9="" class="alertText" style="display: none;">Digite um documento válido.</span>
                   </div>
-                  <div data-v-24d558e9="" class="main-bump"></div>
+                  <div data-v-24d558e9="" class="input-wrapper">
+                    <label data-v-24d558e9="" for="telefone">CELULAR COM WHATSAPP</label>
+                    <div data-v-24d558e9="" class="input-icons phone-icon">
+                      <input data-v-24d558e9="" type="tel" inputmode="tel" id="telefone" name="telefone" class="">
+                    </div>
+                    <span data-v-24d558e9="" class="alertText" style="display: none;"></span>
+                  </div>
                 </div>
-                <div data-v-24d558e9="" class="contentCheckoutAmount">
-                  <h4 data-v-24d558e9="">
-                    Valor total: <?php echo "RS " . safe_number_format($row['valor'], 2, ',', '.'); ?>
-                  </h4>
+                <?php
+                // Certifique-se de que $row['valor'] é um valor numérico
+                $valor = safe_number_format($row['valor'], 2, ',', '.');
+                ?>
+                <div class="valor" style="display: none;">
+                  <input type="text" value="<?php echo htmlspecialchars($valor); ?>"
+                    placeholder="<?php echo htmlspecialchars($valor); ?>" readonly id="valuedeposit">
+                </div>
+            </div>
+            <h2 data-v-24d558e9=""><span data-v-24d558e9="" class="orderNumber">2</span> DADOS DE PAGAMENTO</h2>
 
-                  <div id="loadingSpinner" class="loading-spinner"></div>
-
-
-                </div> <button data-v-24d558e9="" type="button" onclick="generateQRCode()"
-                  class="submitCheckoutButton"><!----> <!----> <span data-v-24d558e9="" class="inherit">Comprar e
-                    receber agora</span></button>
-              </form>
+            <!-- Tabs de seleção de pagamento -->
+            <div class="tab-header">
+              <button type="button" class="tab-button active" id="btnPix" onclick="selectPayment('PIX')">PIX</button>
+              <button type="button" class="tab-button" id="btnCard" onclick="selectPayment('CREDIT_CARD')">Cartão de
+                Crédito</button>
             </div>
 
-
-
-
-
-
-
-            <div class="url-api" style="display: none;">
-              <input type="text" placeholder="URL de Requisição" id="apiUrl"
-                value="https://api.abacash.pro/v1/gateway/">
+            <!-- Opção Pix -->
+            <div id="pixOption" class="tab-content">
+              <h4>Pague no PIX</h4>
+              <p>Ao selecionar a opção Gerar Pix o código para pagamento estará disponível.</p>
             </div>
 
-            <div class="chave-api" style="display: none;">
-              <input type="text" placeholder="Chave key" id="clientId" value="<?php echo htmlspecialchars($row['key_gateway']); ?>">
+            <!-- Opção Cartão -->
+            <div id="cardOption" class="tab-content" style="display:none;">
+              <h4>Pague com Cartão de Crédito</h4>
+              <div class="input-wrapper">
+                <label for="cardNumber">Número do Cartão</label>
+                <input type="text" id="cardNumber" maxlength="19" placeholder="0000 0000 0000 0000">
+              </div>
+              <div class="input-wrapper">
+                <label for="cardName">Nome impresso no Cartão</label>
+                <input type="text" id="cardName" placeholder="Nome completo">
+              </div>
+              <div class="input-wrapper">
+                <label for="cardExpiry">Validade (MM/AA)</label>
+                <input type="text" id="cardExpiry" maxlength="5" placeholder="MM/AA">
+              </div>
+              <div class="input-wrapper">
+                <label for="cardCvv">CVV</label>
+                <input type="text" id="cardCvv" maxlength="4" placeholder="CVV">
+              </div>
+              <div class="input-wrapper">
+                <label for="cardCep">CEP do titular do cartão</label>
+                <input type="text" id="cardCep" maxlength="9" placeholder="00000-000">
+              </div>
+              <div class="input-wrapper">
+                <label for="endereco">Endereço </label>
+                <input type="text" id="endereco" maxlength="9" placeholder="00000-000">
+              </div>
+              <div class="input-wrapper">
+                <label for="numero_endereco">Número </label>
+                <input type="text" id="numero_endereco" maxlength="9" placeholder="00000-000">
+              </div>
             </div>
 
+            <div class="contentCheckoutAmount">
+              <h4>Valor total: <?php echo "RS " . safe_number_format($row['valor'], 2, ',', '.'); ?></h4>
+              <div id="loadingSpinner" class="loading-spinner"></div>
+            </div>
+            <button type="button" onclick="enviarPagamento()" class="submitCheckoutButton">
+              <span class="inherit">Comprar e receber agora</span>
+            </button>
+
+            <!-- QR Code e instruções Pix: agora logo abaixo do botão -->
+            <div class="box1" style="display: none; margin-top: 2rem;">
+              <h2 data-v-4dd5f040="">
+                Siga os passos para pagar:
+              </h2>
+              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">1 - </span>Copie o código <strong
+                  data-v-4dd5f040="">PIX:</strong></p>
+              <div class="conteiner">
+                <div id="qrcode"></div>
+                <div class="divqr">
+                  <div id="qr-code-text"></div>
+                  <button id="copy-button-pix">Copiar Código Pix</button>
+                </div>
+              </div>
+              <br>
+              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">2 - </span>Abra o aplicativo do seu
+                banco favorito</p>
+              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">3 - </span>Na seção de PIX, selecione a
+                opção <strong data-v-4dd5f040="">"Pix Copia e Cola"</strong></p>
+              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">4 - </span>Cole o código</p>
+              <p data-v-4dd5f040=""><span data-v-4dd5f040="" class="numberIcon">5 - </span>Confirme o pagamento</p>
+            </div>
+            </form>
           </div>
 
 
 
 
 
-          <p data-v-24d558e9="" id="footerText">Ambiente criptografado e 100% seguro.</p>
+
+
+          <div class="url-api" style="display: none;">
+            <input type="text" placeholder="URL de Requisição" id="apiUrl" value="https://api.abacash.pro/v1/gateway/">
+          </div>
+
+          <div class="chave-api" style="display: none;">
+            <input type="text" placeholder="Chave key" id="clientId"
+              value="<?php echo htmlspecialchars($row['key_gateway']); ?>">
+          </div>
+
       </div>
-      </main>
-      <footer data-v-406b1e0c="" data-v-24d558e9="">
-        <h5 data-v-406b1e0c=""><span data-v-406b1e0c="" class="grey-padlock-icon">Compra segura</span> <span
-            data-v-406b1e0c="" class="safe-icon">Dados protegidos</span></h5>
-        <p data-v-406b1e0c="">
-          © 2024 - Todos os
-          direitos reservados.
-        </p>
-      </footer>
-      <!----> <!---->
-      <div data-v-9420208a="" data-v-24d558e9="" class="checkout-preloader" style="display: none;"><svg
-          data-v-9420208a="" width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path data-v-9420208a=""
-            d="M5.27128 21.4966C5.29592 21.5102 5.32179 21.5239 5.34642 21.5363C6.10034 21.9324 6.91954 22.2193 7.7794 22.3795L7.9149 22.4242V22.6291C7.9149 23.3866 8.52345 24 9.2749 24H12.0491V22.2466C14.1137 21.7747 16.0072 20.7167 17.5236 19.1595C19.5821 17.0448 20.7166 14.2483 20.7166 11.2866C20.7166 8.32245 19.5833 5.52719 17.5236 3.41243C15.47 1.30015 12.7217 0.10431 9.78983 0.0447043L7.51208 0V5.01557C4.49766 5.67745 2.02773 7.90397 1.04961 10.8545C1.03729 10.8594 1.02621 10.8631 1.01512 10.8694C0.744106 11.7262 0.599976 12.6377 0.599976 13.5851C0.599976 17.0025 2.48969 19.9729 5.27128 21.4966ZM5.09389 13.1356C5.2257 12.0466 5.75171 11.0916 6.51795 10.4087C7.27802 9.73312 8.27215 9.32457 9.35251 9.31588C10.0337 9.31091 10.699 9.05635 11.188 8.57826C11.6968 8.08154 11.9777 7.41346 11.9777 6.70068V5.0044C14.4698 5.98913 16.2486 8.44911 16.2486 11.2841C16.2486 14.8331 13.4596 17.7936 9.96722 18.0109L9.95121 18.0034L9.42396 18.0233L9.11476 18.0171C8.9694 18.0084 8.82527 17.9922 8.6836 17.9686L8.60968 17.9562C6.86287 17.6408 5.47085 16.2587 5.137 14.4954L5.11114 14.36C5.04338 14.0011 5.03106 13.6336 5.07418 13.271L5.09019 13.1356H5.09389Z"
-            fill="#E02932"></path>
-        </svg></div>
+
+
+
+      <p data-v-24d558e9="" id="footerText">Ambiente criptografado e 100% seguro.</p>
     </div>
+    </main>
+    <footer data-v-406b1e0c="" data-v-24d558e9="">
+      <h5 data-v-406b1e0c=""><span data-v-406b1e0c="" class="grey-padlock-icon">Compra segura</span> <span
+          data-v-406b1e0c="" class="safe-icon">Dados protegidos</span></h5>
+      <p data-v-406b1e0c="">
+        © 2024 - Todos os
+        direitos reservados.
+      </p>
+    </footer>
+    <!----> <!---->
+    <div data-v-9420208a="" data-v-24d558e9="" class="checkout-preloader" style="display: none;"><svg data-v-9420208a=""
+        width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path data-v-9420208a=""
+          d="M5.27128 21.4966C5.29592 21.5102 5.32179 21.5239 5.34642 21.5363C6.10034 21.9324 6.91954 22.2193 7.7794 22.3795L7.9149 22.4242V22.6291C7.9149 23.3866 8.52345 24 9.2749 24H12.0491V22.2466C14.1137 21.7747 16.0072 20.7167 17.5236 19.1595C19.5821 17.0448 20.7166 14.2483 20.7166 11.2866C20.7166 8.32245 19.5833 5.52719 17.5236 3.41243C15.47 1.30015 12.7217 0.10431 9.78983 0.0447043L7.51208 0V5.01557C4.49766 5.67745 2.02773 7.90397 1.04961 10.8545C1.03729 10.8594 1.02621 10.8631 1.01512 10.8694C0.744106 11.7262 0.599976 12.6377 0.599976 13.5851C0.599976 17.0025 2.48969 19.9729 5.27128 21.4966ZM5.09389 13.1356C5.2257 12.0466 5.75171 11.0916 6.51795 10.4087C7.27802 9.73312 8.27215 9.32457 9.35251 9.31588C10.0337 9.31091 10.699 9.05635 11.188 8.57826C11.6968 8.08154 11.9777 7.41346 11.9777 6.70068V5.0044C14.4698 5.98913 16.2486 8.44911 16.2486 11.2841C16.2486 14.8331 13.4596 17.7936 9.96722 18.0109L9.95121 18.0034L9.42396 18.0233L9.11476 18.0171C8.9694 18.0084 8.82527 17.9922 8.6836 17.9686L8.60968 17.9562C6.86287 17.6408 5.47085 16.2587 5.137 14.4954L5.11114 14.36C5.04338 14.0011 5.03106 13.6336 5.07418 13.271L5.09019 13.1356H5.09389Z"
+          fill="#E02932"></path>
+      </svg></div>
+  </div>
   </div>
   </div>
 
@@ -2483,7 +2467,6 @@ $valor = safe_number_format($row['valor'], 2, ',', '.');
           paymentCode = data.paymentCode;
           transactionId = data.idTransaction; // Ajustado para pegar idTransaction
 
-         
 
           // Adiciona o paymentCode ao texto da div
           document.getElementById('qr-code-text').textContent = paymentCode;
@@ -2535,7 +2518,6 @@ $valor = safe_number_format($row['valor'], 2, ',', '.');
 
         if (data.status === "PAID_OUT") {
           clearInterval(checkPaymentStatus); // Para a verificação quando o pagamento for confirmado
-          
           window.location.replace("<?php echo htmlspecialchars($row['obrigado_page']); ?>");
           alert("Pagamento confirmado!");
         } else if (data.status === "WAITING_FOR_APPROVAL") {
@@ -2546,62 +2528,178 @@ $valor = safe_number_format($row['valor'], 2, ',', '.');
       }
     }
 
-  
   </script>
 
-<script>
-// Função para formatar o campo CPF no formato XXX.XXX.XXX-XX
-document.getElementById('cpf').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (value.length <= 11) {
+  <script>
+    // Função para formatar o campo CPF no formato XXX.XXX.XXX-XX
+    document.getElementById('cpf').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+      if (value.length <= 11) {
         value = value
-            .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o primeiro ponto
-            .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o segundo ponto
-            .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca o traço
-    }
-    e.target.value = value.slice(0, 14); // Limita a 14 caracteres
-});
-</script>
+          .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o primeiro ponto
+          .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o segundo ponto
+          .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca o traço
+      }
+      e.target.value = value.slice(0, 14); // Limita a 14 caracteres
+    });
+  </script>
 
-<script>
-// Função para formatar o CPF no formato XXX.XXX.XXX-XX e limitar os caracteres
-document.getElementById('document').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (value.length > 11) {
+  <script>
+    // Função para formatar o CPF no formato XXX.XXX.XXX-XX e limitar os caracteres
+    document.getElementById('document').addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+      if (value.length > 11) {
         value = value.slice(0, 11); // Limita a 11 números
-    }
-    value = value
+      }
+      value = value
         .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o primeiro ponto
         .replace(/(\d{3})(\d)/, '$1.$2') // Coloca o segundo ponto
         .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Coloca o traço
-    e.target.value = value;
-});
-</script>
+      e.target.value = value;
+    });
+  </script>
 
-<script>
+  <script>
 
-// Função para formatar o telefone no formato (XX)XXXXX-XXXX e limitar os caracteres
-document.getElementsByName('userPhone')[0].addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
-    if (value.length > 11) {
+    // Função para formatar o telefone no formato (XX)XXXXX-XXXX e limitar os caracteres
+    document.getElementsByName('telefone')[0].addEventListener('input', function (e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+      if (value.length > 11) {
         value = value.slice(0, 11); // Limita a 11 números
-    }
-    value = value
+      }
+      value = value
         .replace(/(\d{2})(\d)/, '($1) $2') // Coloca os parênteses no DDD
         .replace(/(\d{5})(\d)/, '$1-$2'); // Coloca o traço após os primeiros 5 dígitos
-    e.target.value = value;
-});
+      e.target.value = value;
+    });
 
-</script>
+  </script>
 
+  <script>
+    // Tabs de seleção
+    function selectPayment(tipo) {
+      document.getElementById('btnPix').classList.remove('active');
+      document.getElementById('btnCard').classList.remove('active');
+      document.getElementById('pixOption').style.display = 'none';
+      document.getElementById('cardOption').style.display = 'none';
+      if (tipo === 'PIX') {
+        document.getElementById('btnPix').classList.add('active');
+        document.getElementById('pixOption').style.display = 'block';
+      } else {
+        document.getElementById('btnCard').classList.add('active');
+        document.getElementById('cardOption').style.display = 'block';
+      }
+      window.tipoPagamentoSelecionado = tipo;
+    }
+    window.tipoPagamentoSelecionado = 'PIX';
 
+    // Função principal de envio
+    async function enviarPagamento() {
+      var tipo = window.tipoPagamentoSelecionado;
+      var name = document.getElementById('name').value;
+      var cpf = document.getElementById('document').value;
+      var amount = document.getElementById('valuedeposit').value;
+      var email = document.getElementsByName('yourEmail')[0].value;
+      var apiUrl = '/api.seusite/v1/adquirente/asaas/processa_pagamento.php';
+      var clientId = document.getElementById('clientId').value;
+      var payload = {
+        name: name,
+        cpf: cpf,
+        amount: amount,
+        tipoPagamento: tipo,
+        email: email
+      };
+      if (tipo === 'CREDIT_CARD') {
+        // Pega dados do cartão
+        var cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        var cardName = document.getElementById('cardName').value;
+        var telefone = document.getElementById('telefone').value;
+        var cardExpiry = document.getElementById('cardExpiry').value;
+        var cardCvv = document.getElementById('cardCvv').value;
+        var cardCep = document.getElementById('cardCep').value;
+        var numero_endereco = document.getElementById('numero_endereco').value;
+        var endereco = document.getElementById('endereco').value;
+        var [expMonth, expYear] = cardExpiry.split('/');
+        payload.creditCard = {
+          number: cardNumber,
+          expiryMonth: expMonth,
+          expiryYear: '20' + expYear,
+          ccv: cardCvv
+        };
+        payload.creditCardHolderInfo = {
+          name: cardName,
+          email: email,
+          cpfCnpj: cpf,
+          postalCode: cardCep,
+          addressNumber: numero_endereco,
+          address: endereco,
+          phone: telefone
+        };
+      }
+      document.getElementById('loadingSpinner').style.display = 'block';
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        document.getElementById('loadingSpinner').style.display = 'none';
+        if (tipo === 'PIX') {
+          if (data.paymentCode) {
+            document.getElementById('qr-code-text').textContent = data.paymentCode;
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById('qrcode'), {
+              text: data.paymentCode,
+              width: 256,
+              height: 256
+            });
+            document.querySelectorAll('.properties').forEach(function (element) {
+              element.style.display = 'none';
+            });
+            document.querySelectorAll('.box1').forEach(function (element) {
+              element.style.display = 'block';
+            });
+            window.transactionId = data.idTransaction;
+            setInterval(checkPaymentStatus, 2000);
+          } else {
+            alert('Erro ao gerar Pix: ' + (data.message || ''));
+          }
+        } else if (tipo === 'CREDIT_CARD') {
+          if (data.status === 'success') {
+            alert('Pagamento com cartão aprovado!');
+            window.location.replace("<?php echo htmlspecialchars($row['obrigado_page']); ?>");
+          } else {
+            alert('Erro no pagamento: ' + (data.message || ''));
+          }
+        }
+      } catch (error) {
+        document.getElementById('loadingSpinner').style.display = 'none';
+        alert('Erro na solicitação: ' + error);
+      }
+    }
 
+    document.getElementById('copy-button-pix').addEventListener('click', function (event) {
+      event.preventDefault();
+      // seleciona o texto do div
+      var textToCopy = document.getElementById('qr-code-text').innerText;
 
+      // cria um elemento de input temporário para usar o comando de copiar
+      var tempInput = document.createElement('input');
+      tempInput.value = textToCopy;
+      document.body.appendChild(tempInput);
 
+      // seleciona o texto no input e copia
+      tempInput.select();
+      document.execCommand('copy');
 
+      // Remove o input temporário da página
+      document.body.removeChild(tempInput);
 
-
-
+      // Alerta customizado de sucesso
+      showCustomAlert('Código Pix copiado com sucesso!', 'success');
+    });
+  </script>
 </body>
 
 </html>
