@@ -1,9 +1,9 @@
 <?php
 
 $config = array(
-    'db_user' => 'sql_abacash_pro',
-    'db_pass' => '929c02c0e1636',
-    'db_name' => 'sql_abacash_pro'
+    'db_user' => 'u214219698_gateway',
+    'db_pass' => '^2vjA:9nFMS',
+    'db_name' => 'u214219698_gateway'
 );
 
 ?>

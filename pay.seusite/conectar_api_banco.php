@@ -1,9 +1,9 @@
 <?php
 
 $config = array(
-    'db_user' => 'u895259214_api',
-    'db_pass' => 'Neto@123123',
-    'db_name' => 'u895259214_api'
+    'db_user' => 'u214219698_gateway',
+    'db_pass' => '^2vjA:9nFMS',
+    'db_name' => 'u214219698_gateway'
 );
 
 ?>

@@ -15,7 +15,7 @@ function formatarNumero($numero)
 }
 
 // Criar a conexão usando as credenciais fornecidas no arquivo incluído
-$cunnect = new mysqli('localhost', 'sql_abacash_pro', '929c02c0e1636', 'sql_abacash_pro');
+$cunnect = new mysqli('localhost', 'u214219698_gateway', '^2vjA:9nFMS', 'u214219698_gateway');
 
 // Verificar a conexão
 if ($cunnect->connect_error) {

@@ -1,14 +1,16 @@
 suba seu banco de dados nas seguintes rotas
+
 na pasta api.seusite
-conectarbanco.php
+ - conectarbanco.php
 
 na pasta pay.seusite
-conectarbanco.php
-conectar_api_banco.php
+ - conectarbanco.php
+ - conectar_api_banco.php
 
 na pasta web.seusite
-conectar_api_banco.php
-conectarbanco.php
+ - conectar_api_banco.php
+ - conectarbanco.php
+
 também na pasta layouts/componentes
 coloque seu banco de dados em sidebar.php
 

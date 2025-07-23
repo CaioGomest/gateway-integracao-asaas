@@ -1,4 +1,26 @@
 <?php
+// // Função utilitária para requisições à API do Asaas
+// function asaasRequest($endpoint, $method = 'GET', $data = null) {
+//     $apiKey = '$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjA4NjUwMjBlLTljZTktNDYwMy1iMGU2LWQxYmYwN2IxYTc4ZTo6JGFhY2hfMjE1YzI1MmYtYzk2ZC00YWYzLTk4NmUtZmVmYjQ4NmY3NDdj'; // Troque pela sua chave real
+//     // $url = "https://www.asaas.com/api/v3/$endpoint";
+//     $url = "https://sandbox.asaas.com/api/v3/$endpoint";
+//     $headers = [
+//         "Content-Type: application/json",
+//         "access_token: $apiKey"
+//     ];
+//     $ch = curl_init();
+//     curl_setopt($ch, CURLOPT_URL, $url);
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//     if ($method === 'POST') {
+//         curl_setopt($ch, CURLOPT_POST, true);
+//         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+//     }
+//     $response = curl_exec($ch);
+//     curl_close($ch);
+//     return json_decode($response, true);
+// } 
+
 
 function asaasRequest($endpoint, $method = 'POST', $data = null) {
     $apiKey = '$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjA4NjUwMjBlLTljZTktNDYwMy1iMGU2LWQxYmYwN2IxYTc4ZTo6JGFhY2hfMjE1YzI1MmYtYzk2ZC00YWYzLTk4NmUtZmVmYjQ4NmY3NDdj'; // substitua

@@ -17,8 +17,10 @@ if (!is_array($data)) {
 // Define ação
 $action = $data['action'] ?? 'create';
 
-/*
-CONSULTAR QR CODE PIX (sem recriar cobrança)
+/**
+ * --------------------------------------------------------
+ * 1) CONSULTAR QR CODE PIX (sem recriar cobrança)
+ * --------------------------------------------------------
  */
 if ($action === 'pix_qrcode') 
 {
@@ -45,9 +47,10 @@ if ($action === 'pix_qrcode')
     exit;
 }
 
-/*
+/**
+ * --------------------------------------------------------
  * 2) CRIAR COBRANÇA (fluxo padrão)
-
+ * --------------------------------------------------------
  */
 
 // Valida campos mínimos

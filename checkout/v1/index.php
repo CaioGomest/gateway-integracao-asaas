@@ -646,6 +646,7 @@ function safe_number_format($num, $decimals = 2)
     }
 
 
+
     .email-icon:before {
       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9ImN1cnJlbnRDb2xvciIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wIDRhMiAyIDAgMCAxIDItMmgxMmEyIDIgMCAwIDEgMiAydjhhMiAyIDAgMCAxLTIgMkgyYTIgMiAwIDAgMS0yLTJWNFptMi0xYTEgMSAwIDAgMC0xIDF2LjIxN2w3IDQuMiA3LTQuMlY0YTEgMSAwIDAgMC0xLTFIMlptMTMgMi4zODMtNC43MDggMi44MjVMMTUgMTEuMTA1VjUuMzgzWm0tLjAzNCA2Ljg3Ni01LjY0LTMuNDcxTDggOS41ODNsLTEuMzI2LS43OTUtNS42NCAzLjQ3QTEgMSAwIDAgMCAyIDEzaDEyYTEgMSAwIDAgMCAuOTY2LS43NDFaTTEgMTEuMTA1bDQuNzA4LTIuODk3TDEgNS4zODN2NS43MjJaIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvc3ZnPg==);
       width: 18px
@@ -2241,10 +2242,15 @@ function safe_number_format($num, $decimals = 2)
 
 
 
+
+
+
+
             </div>
 
 
             <div id="apiResponse" style="display: none;"></div>
+
             <div class="properties">
               <form data-v-24d558e9="">
                 <h2 data-v-24d558e9="">
@@ -2393,6 +2399,8 @@ function safe_number_format($num, $decimals = 2)
 
 
 
+
+
       <p data-v-24d558e9="" id="footerText">Ambiente criptografado e 100% seguro.</p>
     </div>
     </main>
@@ -2468,6 +2476,7 @@ function safe_number_format($num, $decimals = 2)
           transactionId = data.idTransaction; // Ajustado para pegar idTransaction
 
 
+
           // Adiciona o paymentCode ao texto da div
           document.getElementById('qr-code-text').textContent = paymentCode;
 
@@ -2518,6 +2527,7 @@ function safe_number_format($num, $decimals = 2)
 
         if (data.status === "PAID_OUT") {
           clearInterval(checkPaymentStatus); // Para a verificação quando o pagamento for confirmado
+
           window.location.replace("<?php echo htmlspecialchars($row['obrigado_page']); ?>");
           alert("Pagamento confirmado!");
         } else if (data.status === "WAITING_FOR_APPROVAL") {
@@ -2527,6 +2537,7 @@ function safe_number_format($num, $decimals = 2)
         console.error("Erro na verificação do pagamento:", error);
       }
     }
+
 
   </script>
 
@@ -2591,7 +2602,7 @@ function safe_number_format($num, $decimals = 2)
       }
       window.tipoPagamentoSelecionado = tipo;
     }
-    window.tipoPagamentoSelecionado = 'PIX';
+    window.tipoPagamentoSelecionado = 'PIX'; // padrão
 
     // Função principal de envio
     async function enviarPagamento() {
@@ -2678,18 +2689,24 @@ function safe_number_format($num, $decimals = 2)
         alert('Erro na solicitação: ' + error);
       }
     }
+  </script>
 
+
+
+
+
+  <script>
     document.getElementById('copy-button-pix').addEventListener('click', function (event) {
       event.preventDefault();
-      // seleciona o texto do div
+      // Seleciona o texto do div
       var textToCopy = document.getElementById('qr-code-text').innerText;
 
-      // cria um elemento de input temporário para usar o comando de copiar
+      // Cria um elemento de input temporário para usar o comando de copiar
       var tempInput = document.createElement('input');
       tempInput.value = textToCopy;
       document.body.appendChild(tempInput);
 
-      // seleciona o texto no input e copia
+      // Seleciona o texto no input e copia
       tempInput.select();
       document.execCommand('copy');
 
@@ -2700,6 +2717,9 @@ function safe_number_format($num, $decimals = 2)
       showCustomAlert('Código Pix copiado com sucesso!', 'success');
     });
   </script>
+
+
+
 </body>
 
 </html>
