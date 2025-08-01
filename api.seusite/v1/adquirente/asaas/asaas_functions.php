@@ -23,7 +23,7 @@
 
 
 function asaasRequest($endpoint, $method = 'POST', $data = null) {
-    $apiKey = '$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjA4NjUwMjBlLTljZTktNDYwMy1iMGU2LWQxYmYwN2IxYTc4ZTo6JGFhY2hfMjE1YzI1MmYtYzk2ZC00YWYzLTk4NmUtZmVmYjQ4NmY3NDdj'; // substitua
+    $apiKey = '$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OmEyYTk4ODMzLWJiNTctNGE1Zi1iYWVlLTRiZDg0Y2I4MThjNzo6JGFhY2hfNDljMmUxNzMtOTNiNS00M2U2LTg5ODYtZjM5ODlkNmQ2MzI3'; // substitua
     $url = "https://sandbox.asaas.com/api/v3/$endpoint";
 
     $headers = [

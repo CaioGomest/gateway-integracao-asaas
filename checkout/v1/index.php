@@ -18,8 +18,9 @@ if (isset($_GET['id'])) {
   $id = preg_replace('/[^a-zA-Z0-9_\-]/', '', $id);
 
   // Construa a consulta SQL para procurar o id na coluna url_checkout
-  $sql = "SELECT id, name_produto, valor, logo_produto, banner_produto, obrigado_page, key_gateway, ativo, email
+  $sql = "SELECT checkout_build.id, name_produto, valor, logo_produto, banner_produto, obrigado_page, key_gateway, ativo, checkout_build.email, users.user_id as user_id
             FROM checkout_build
+            inner join users on users.cliente_id = checkout_build.key_gateway
             WHERE url_checkout LIKE ?";
 
   // Adiciona o ID sanitizado ao padrão de busca com LIKE
@@ -55,6 +56,9 @@ function safe_number_format($num, $decimals = 2)
   // Se $num for null ou não for um número válido, substitui por 0
   return number_format(is_numeric($num) ? $num : 0, $decimals);
 }
+
+
+var_dump($row);
 ?>
 
 
@@ -2345,6 +2349,14 @@ function safe_number_format($num, $decimals = 2)
                 <label for="numero_endereco">Número </label>
                 <input type="text" id="numero_endereco" maxlength="9" placeholder="00000-000">
               </div>
+              <div class="input-wrapper">
+                <label for="cardCity">Cidade do titular do cartão</label>
+                <input type="text" id="cardCity" maxlength="50" placeholder="Cidade">
+              </div>
+              <div class="input-wrapper">
+                <label for="cardState">Estado do titular do cartão</label>
+                <input type="text" id="cardState" maxlength="2" placeholder="UF">
+              </div>
             </div>
 
             <div class="contentCheckoutAmount">
@@ -2391,8 +2403,8 @@ function safe_number_format($num, $decimals = 2)
           </div>
 
           <div class="chave-api" style="display: none;">
-            <input type="text" placeholder="Chave key" id="clientId"
-              value="<?php echo htmlspecialchars($row['key_gateway']); ?>">
+            <input type="text" placeholder="Chave key" id="user_id"
+              value="<?php echo htmlspecialchars($row['user_id']); ?>">
           </div>
 
       </div>
@@ -2445,10 +2457,10 @@ function safe_number_format($num, $decimals = 2)
       var cpf = document.getElementById('document').value;
       var amount = document.getElementById('valuedeposit').value;
       var apiUrl = document.getElementById('apiUrl').value;
-      var clientId = document.getElementById('clientId').value;
+      var user_id = document.getElementById('user_id').value;
 
       var payload = {
-        "api-key": clientId,
+        "api-key": user_id,
         "requestNumber": "12356",
         "dueDate": "2023-12-31",
         "amount": parseFloat(amount),
@@ -2612,13 +2624,14 @@ function safe_number_format($num, $decimals = 2)
       var amount = document.getElementById('valuedeposit').value;
       var email = document.getElementsByName('yourEmail')[0].value;
       var apiUrl = '/api.seusite/v1/adquirente/asaas/processa_pagamento.php';
-      var clientId = document.getElementById('clientId').value;
+      var user_id = document.getElementById('user_id').value;
       var payload = {
         name: name,
         cpf: cpf,
         amount: amount,
         tipoPagamento: tipo,
-        email: email
+        email: email,
+        user_id: user_id
       };
       if (tipo === 'CREDIT_CARD') {
         // Pega dados do cartão
@@ -2630,6 +2643,8 @@ function safe_number_format($num, $decimals = 2)
         var cardCep = document.getElementById('cardCep').value;
         var numero_endereco = document.getElementById('numero_endereco').value;
         var endereco = document.getElementById('endereco').value;
+        var cardCity = document.getElementById('cardCity').value;
+        var cardState = document.getElementById('cardState').value;
         var [expMonth, expYear] = cardExpiry.split('/');
         payload.creditCard = {
           number: cardNumber,
@@ -2644,7 +2659,9 @@ function safe_number_format($num, $decimals = 2)
           postalCode: cardCep,
           addressNumber: numero_endereco,
           address: endereco,
-          phone: telefone
+          phone: telefone,
+          city: cardCity,
+          state: cardState
         };
       }
       document.getElementById('loadingSpinner').style.display = 'block';
@@ -2716,9 +2733,32 @@ function safe_number_format($num, $decimals = 2)
       // Alerta customizado de sucesso
       showCustomAlert('Código Pix copiado com sucesso!', 'success');
     });
+  
+    // Função para buscar cidade e estado pelo CEP usando ViaCEP
+    document.getElementById('cardCep').addEventListener('blur', function () {
+      var cep = this.value.replace(/\D/g, '');
+      if (cep.length === 8) {
+        fetch('https://viacep.com.br/ws/' + cep + '/json/')
+          .then(response => response.json())
+          .then(data => {
+            if (!data.erro) {
+              document.getElementById('cardCity').value = data.localidade || '';
+              document.getElementById('cardState').value = data.uf || '';
+            } else {
+              document.getElementById('cardCity').value = '';
+              document.getElementById('cardState').value = '';
+            }
+          })
+          .catch(() => {
+            document.getElementById('cardCity').value = '';
+            document.getElementById('cardState').value = '';
+          });
+      } else {
+        document.getElementById('cardCity').value = '';
+        document.getElementById('cardState').value = '';
+      }
+    });
   </script>
-
-
 
 </body>
 
